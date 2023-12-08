@@ -47,9 +47,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     USERNAME_FIELD = 'email'
 
-class Stocks(models.Model):
+class Stock(models.Model):
     """Model for the stocks."""
     name = models.CharField(max_length=255)
     price = models.IntegerField()
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL, blank=True)
