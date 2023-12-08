@@ -8,7 +8,7 @@ from django.contrib.auth.models import (
     PermissionsMixin,
     BaseUserManager,
     )
-
+from django.conf import settings
 
 class UserManager(BaseUserManager):
     """Manager for the users."""
@@ -46,3 +46,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+class Stocks(models.Model):
+    """Model for the stocks."""
+    name = models.CharField(max_length=255)
+    price = models.IntegerField()
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, blank=True)
