@@ -11,6 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 from core.models import Stock
 from stocks import serializers
 
+from django.core.mail import send_mail
+from django.conf import settings
 
 class StockViewSet(mixins.ListModelMixin,
                    mixins.RetrieveModelMixin,
@@ -34,8 +36,17 @@ class StockViewSet(mixins.ListModelMixin,
         stock = Stock.objects.get(name=instance.name)
         stock.user = user
         stock.save()
-        
-        serializer = self.get_serializer(stock)
 
+        serializer = self.get_serializer(stock)
+        print(user.email)
+        print(type(user.email))
+
+        send_mail(
+            "Stock Purchased",
+            f"Your purchase of stock {stock.name} is successful. Thank you for the purchase..",
+            settings.EMAIL_HOST_USER,
+            [user.email],
+            fail_silently=False,
+        )
         # return Response(serializer.data)
         return Response(f'Stock {stock.name} has been purchased by user {user.email}')

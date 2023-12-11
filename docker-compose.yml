@@ -19,7 +19,7 @@ services:
       - DB_NAME=devdb
       - DB_USER=devuser
       - DB_PASS=changeme
-
+      - MAIL_PASS=leothedgzbzdujbe
     depends_on:
       - db
 

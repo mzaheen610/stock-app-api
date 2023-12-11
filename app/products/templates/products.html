@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stocks - Products</title>
+</head>
+<body>
+    <h1>PRODUCTS</h1>
+    <div id="stocks-list"></div>
+
+    <script>
+        // Fetch stocks data from Django API endpoint
+        fetch('/stock/stocks/')
+            .then(response => response.json())
+            .then(data => {
+                const stocksList = document.getElementById('stocks-list');
+                data.forEach(stock => {
+                    const stockItem = document.createElement('div');
+                    stockItem.innerHTML = `
+                        <p>Name: ${stock.name}</p>
+                        <p>Price: ${stock.price}</p>
+                        <button onclick="purchaseStock(${stock.id})">Purchase</button>
+                    `;
+                    stocksList.appendChild(stockItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching stocks:', error);
+            });
+
+        // Function to handle purchasing a stock
+        function purchaseStock(stockId) {
+            fetch(`/stock/stocks/${stockId}/`, {
+                method: 'GET',
+            })
+            .then(response => response.json())
+            .then(() => {window.location.reload();})
+            .then(data => {
+                console.log('Stock purchased:', data);
+            })
+            .catch(error => {
+                console.error('Error purchasing stock:', error);
+            });
+        }
+    </script>
+    {% load socialaccount %}
+    {% if not user.is_authenticated %}
+    <p>Please sign in to purchase stocks.</p>
+    <a href="{% provider_login_url 'google' %}?next=/">Login with Google</a>
+    {%endif%}
+</body>
+</html>
