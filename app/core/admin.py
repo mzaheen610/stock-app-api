@@ -39,5 +39,13 @@ class UserAdmin(BaseUserAdmin):
         }),
     )
 
+
+class StockAdmin(admin.ModelAdmin):
+    """Admin for the stocks model"""
+    empty_value_display = "-empty-"
+    ordering = ['name']
+    list_display = ['name', 'price', 'user']
+
+
 admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Stock)
+admin.site.register(models.Stock, StockAdmin)

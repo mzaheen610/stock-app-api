@@ -11,4 +11,4 @@ class StockSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Stock
-        fields = ['name', 'price']
+        fields = ['id', 'name', 'price']
